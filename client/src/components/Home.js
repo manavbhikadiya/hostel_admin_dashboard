@@ -78,7 +78,7 @@ const Home = () => {
         ""
       )}
       <div className="row">
-        {(hostel.length > 1 && hostel[0].length > 1) ? (
+        {(hostel.length > 0 && hostel[0].length > 1) ? (
           hostel
         ) : (
           <div className="noDataFoundContainer">
