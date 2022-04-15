@@ -36,6 +36,14 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+@media (max-width: 1499px) {
+  .headerContainer{
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
 /*--------------------------------------------------------------
 # Page Title
 --------------------------------------------------------------*/
@@ -1156,3 +1164,4 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center;
   align-items: center;
 }
+

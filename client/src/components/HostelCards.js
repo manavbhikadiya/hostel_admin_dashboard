@@ -31,7 +31,7 @@ const HostelCards = (props) => {
   console.log(props);
   return (
     <>
-      <div className="col-sm-4">
+      <div className="col-sm-4 col-xs-12">
         <div className="card">
           <div className="card-body">
             <div className="headerContainer">
