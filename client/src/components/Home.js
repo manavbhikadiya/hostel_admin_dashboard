@@ -3,6 +3,7 @@ import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "react-js-loader";
 import HostelCards from "./HostelCards";
+import { NavLink } from "react-router-dom";
 
 const Home = () => {
   const [data, setData] = useState([]);
@@ -39,31 +40,46 @@ const Home = () => {
           </ol>
         </nav>
       </div>
-      {
-        isLoading?(<Loader type="bubble-scale" bgColor={"#012970"} title={"Loading..."} color={'#012970'} size={50} />):('')
-      }
+      {isLoading ? (
+        <Loader
+          type="bubble-scale"
+          bgColor={"#012970"}
+          title={"Loading..."}
+          color={"#012970"}
+          size={50}
+        />
+      ) : (
+        ""
+      )}
       <div className="row">
-        {data.map((college, index) =>
-          college.hostels.map((hostels, index) => {
-            console.log(hostels);
+        {data ? (
+          data.map((college, index) =>
+            college.hostels.map((hostels, index) => {
+              console.log(hostels);
 
-            return (
-              <HostelCards
-                hostel_id={hostels._id}
-                college_id={collegeId}
-                hostelName={hostels.hostel_name}
-                managerName={hostels.manager_name}
-                helpline_no={hostels.helpline_no}
-                kms={hostels.kms}
-                rooms_available={hostels.rooms_available}
-                room_price={hostels.room_price}
-                location={hostels.location}
-                hostel_image={hostels.hostel_image}
-                boys={hostels.boys}
-                girls={hostels.girls}
-              />
-            );
-          })
+              return (
+                <HostelCards
+                  hostel_id={hostels._id}
+                  college_id={collegeId}
+                  hostelName={hostels.hostel_name}
+                  managerName={hostels.manager_name}
+                  helpline_no={hostels.helpline_no}
+                  kms={hostels.kms}
+                  rooms_available={hostels.rooms_available}
+                  room_price={hostels.room_price}
+                  location={hostels.location}
+                  hostel_image={hostels.hostel_image}
+                  boys={hostels.boys}
+                  girls={hostels.girls}
+                />
+              );
+            })
+          )
+        ) : (
+          <>
+            <h1>No Hostels found.</h1>
+            <NavLink className="nav-link" to="/addHostel">Add Hostel from here.</NavLink>
+          </>
         )}
       </div>
     </main>
