@@ -4,7 +4,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Loader from "react-js-loader";
 import HostelCards from "./HostelCards";
 import { NavLink } from "react-router-dom";
-
 const Home = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -22,10 +21,37 @@ const Home = () => {
         setIsLoading(false);
       })
       .catch((e) => {
-        alert("Data Not found");
-        setIsLoading(false);
+        return (
+          <div className="noDataFoundContainer">
+            <h3>No Hostels found.</h3>
+            <NavLink classNa to="/addHostel">
+              Add Hostel from here.
+            </NavLink>
+          </div>
+        );
       });
   };
+
+  const hostel = data?.map((college, index) =>
+    college.hostels.map((hostels, index) => {
+      return (
+        <HostelCards
+          hostel_id={hostels._id}
+          college_id={collegeId}
+          hostelName={hostels.hostel_name}
+          managerName={hostels.manager_name}
+          helpline_no={hostels.helpline_no}
+          kms={hostels.kms}
+          rooms_available={hostels.rooms_available}
+          room_price={hostels.room_price}
+          location={hostels.location}
+          hostel_image={hostels.hostel_image}
+          boys={hostels.boys}
+          girls={hostels.girls}
+        />
+      );
+    })
+  );
 
   return (
     <main id="main" className="main">
@@ -52,34 +78,15 @@ const Home = () => {
         ""
       )}
       <div className="row">
-        {data ? (
-          data.map((college, index) =>
-            college.hostels.map((hostels, index) => {
-              console.log(hostels);
-
-              return (
-                <HostelCards
-                  hostel_id={hostels._id}
-                  college_id={collegeId}
-                  hostelName={hostels.hostel_name}
-                  managerName={hostels.manager_name}
-                  helpline_no={hostels.helpline_no}
-                  kms={hostels.kms}
-                  rooms_available={hostels.rooms_available}
-                  room_price={hostels.room_price}
-                  location={hostels.location}
-                  hostel_image={hostels.hostel_image}
-                  boys={hostels.boys}
-                  girls={hostels.girls}
-                />
-              );
-            })
-          )
+        {(hostel.length > 1 && hostel[0].length > 1) ? (
+          hostel
         ) : (
-          <>
-            <h1>No Hostels found.</h1>
-            <NavLink className="nav-link" to="/addHostel">Add Hostel from here.</NavLink>
-          </>
+          <div className="noDataFoundContainer">
+            <h3>No Hostels found.</h3>
+            <NavLink classNa to="/addHostel">
+              Add Hostel from here.
+            </NavLink>
+          </div>
         )}
       </div>
     </main>
