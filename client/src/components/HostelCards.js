@@ -28,7 +28,6 @@ const HostelCards = (props) => {
         alert("Data Not Delete");
       });
   };
-  console.log(props);
   return (
     <>
       <div className="col-sm-4 col-xs-12">

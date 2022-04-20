@@ -160,7 +160,7 @@ exports.updateHostel = async (req, res) => {
   };
 
   if(!req.file){
-    Hostel.update(
+    Hostel.updateOne(
       { "hostels._id": id },
       {
         $set: {
