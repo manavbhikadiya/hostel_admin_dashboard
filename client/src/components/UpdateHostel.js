@@ -9,7 +9,7 @@ import Loader from "react-js-loader";
 
 const UpdateHostel = () => {
   const search = useLocation().search;
-  var college_id = null;
+  var college_id = new URLSearchParams(search).get("college_id");
   var hostel_id = new URLSearchParams(search).get("hostel_id");
 
   const history = useHistory();
