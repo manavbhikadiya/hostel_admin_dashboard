@@ -75,7 +75,7 @@ const UpdateHostel = () => {
     formData.append("hostel_image", file);
 
     axios
-      .post(`http://localhost:8000/hostel/update/${hostel_id}`, formData)
+      .post(`/hostel/update/${hostel_id}`, formData)
       .then((res) => {
 
         toast.success("Your Hostel Data Updated", {
