@@ -54,6 +54,9 @@ const hostelSchema = new mongoose.Schema({
       location: {
         type: String
       },
+      description:{
+        type:String
+      },
       hostel_image : {
         type : String
       }
@@ -75,6 +78,7 @@ hostelSchema.methods.addHostels = async function (
   rooms_available,
   room_price,
   location,
+  description,
   hostel_image
 ) {
   try {
@@ -92,6 +96,7 @@ hostelSchema.methods.addHostels = async function (
       rooms_available,
       room_price,
       location,
+      description,
       hostel_image
     });
     await this.save();

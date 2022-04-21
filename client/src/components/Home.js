@@ -48,6 +48,7 @@ const Home = () => {
           hostel_image={hostels.hostel_image}
           boys={hostels.boys}
           girls={hostels.girls}
+          description={hostels.description}
         />
       );
     })

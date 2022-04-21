@@ -121,6 +121,10 @@ const HostelCards = (props) => {
                 <h4 className="managerName">{props.kms}</h4>
               </div>
             </div>
+            <div style={{ marginTop: 15 }}>
+              <h4 className="managerNameHeadingText">Description</h4>
+              <p className="managerName">{props.description}</p>
+            </div>
             <div className="contactContainer">
               <div>
                 <h4 className="contactHeading">

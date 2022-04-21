@@ -72,6 +72,7 @@ const UpdateHostel = () => {
     formData.append("rooms_available", initialData.rooms_available);
     formData.append("room_price", initialData.room_price);
     formData.append("location", initialData.location);
+    formData.append("description",initialData.description);
     formData.append("hostel_image", file);
 
     axios
@@ -248,6 +249,12 @@ const UpdateHostel = () => {
                   onChange={handleFileChange}
                   id="file"
                 />
+              </div>
+              <div class="col-md-6">
+                <label for="hostel_description" class="form-label">
+                  Hostel Description
+                </label>
+                <textarea class="form-control" id="hostel_description" name="description" value={initialData.description} onChange={handleData} rows="3">{initialData.description}</textarea>
               </div>
               <div class="col-12">
                 <div class="form-check">

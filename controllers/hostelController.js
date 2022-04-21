@@ -75,6 +75,7 @@ exports.addHostel = async (req, res) => {
     rooms_available,
     room_price,
     location,
+    description,
   } = req.body;
 
   const college_id = req.params.college_id;
@@ -106,6 +107,7 @@ exports.addHostel = async (req, res) => {
       rooms_available,
       room_price,
       location,
+      description,
       hostel_image
     );
     res.status(201).send({ message: "Hostel Added" });
@@ -130,6 +132,7 @@ exports.updateHostel = async (req, res) => {
     rooms_available,
     room_price,
     location,
+    description
   } = req.body;
 
   if (req.file) {
@@ -156,6 +159,7 @@ exports.updateHostel = async (req, res) => {
     room_price: room_price,
     location: location,
     _id: id,
+    description,
     hostel_image: url,
   };
 
@@ -175,7 +179,8 @@ exports.updateHostel = async (req, res) => {
           "hostels.$.rooms_available": newData.rooms_available,
           "hostels.$.room_price": newData.room_price,
           "hostels.$.location": newData.location,
-          "hostels.$._id":id
+          "hostels.$._id":id,
+          "hostels.$.description":newData.description
         },
       }
     )
@@ -207,7 +212,8 @@ exports.updateHostel = async (req, res) => {
           "hostels.$.room_price": newData.room_price,
           "hostels.$.location": newData.location,
           "hostels.$.hostel_image":newData.hostel_image,
-          "hostels.$._id":id
+          "hostels.$._id":id,
+          "hostels.$.description":newData.description
         },
       }
     )
