@@ -26,4 +26,4 @@ route.get('/initalData',authenticate,(req,res)=>{
     res.send(req.rootAdmin);
 })
 
-module.exports = route
+module.exports = route;
