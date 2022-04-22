@@ -17,7 +17,7 @@ route.get("/getFavouriteHostels/:user_id",getFavouriteHostels);
 route.post("/addHostel/:college_id", uploadProfile.single('hostel_image'), addHostel);
 
 // hostel modifier
-route.post('/update/:id', uploadProfile.single('hostel_image'), updateHostel)
+route.post('/update/:id', uploadProfile.single('hostel_image'), updateHostel);
 
 // hostel remover
 route.post('/delete/:id', removeHostel)
