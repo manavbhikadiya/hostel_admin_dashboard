@@ -20,7 +20,7 @@ route.post("/addHostel/:college_id", uploadProfile.single('hostel_image'), addHo
 route.post('/update/:id', uploadProfile.single('hostel_image'), updateHostel);
 
 // hostel remover
-route.post('/delete/:id', removeHostel)
+route.post('/delete/:id', removeHostel);
 
 route.get('/initalData',authenticate,(req,res)=>{
     res.send(req.rootAdmin);
