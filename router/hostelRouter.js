@@ -2,7 +2,7 @@ const express = require("express");
 const route = express.Router();
 const { getAllHostels,addHostel, updateHostel, removeHostel, getAllHostelsOfCollege, getHostelDetails, getFavouriteHostels } = require('../controllers/hostelController');
 const authenticate = require("../middleware/authenticate");
-const { uploadProfile } = require('../middleware/file')
+const { uploadProfile } = require('../middleware/file');
 
 route.get('/getAllhostels',getAllHostels);
 
