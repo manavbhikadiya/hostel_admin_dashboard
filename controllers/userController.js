@@ -176,7 +176,7 @@ exports.updateUser = async (req, res) => {
 
   try {
     if(req.file){
-      await User.findByIdAndUpdate({ _id: req.params.id }, { $set: { email: email, name: name, password: password, mobile: mobile, profile: url } })
+      await User.findByIdAndUpdate({ _id: req.params.id }, { $set: { email: email, name: name, mobile: mobile, profile: url } })
       .then((value) => {
         if (value) {
           res.send({ success: true, message: "User Updated" })
@@ -188,7 +188,7 @@ exports.updateUser = async (req, res) => {
         res.send({ success: false, err: "invalid id" })
       })
     }else{
-      await User.findByIdAndUpdate({ _id: req.params.id }, { $set: { email: email, name: name, password: password, mobile: mobile } })
+      await User.findByIdAndUpdate({ _id: req.params.id }, { $set: { email: email, name: name, mobile: mobile } })
       .then((value) => {
         if (value) {
           res.send({ success: true, message: "User Updated" })
