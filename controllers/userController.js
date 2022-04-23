@@ -79,7 +79,7 @@ exports.forgotPassword = async(req,res) =>{
   try {
     const userExist = await User.findOne({ email: email });
     if (userExist) {
-      // sendMail(email, userExist.password);
+      sendMail(email, userExist.password);
       res.status(200).send({ message: "Password sent successfully" });
     } else {
       res.status(400).send({ message: "You have provide wrong email" });
