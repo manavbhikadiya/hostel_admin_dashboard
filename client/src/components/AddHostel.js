@@ -46,7 +46,7 @@ const AddHostel = () => {
   };
 
   const submitData = (e) => {
-    setIsLoading(true)
+    setIsLoading(true);
     e.preventDefault();
     const formData = new FormData();
     formData.append("girls", data.girls);
