@@ -175,7 +175,8 @@ exports.updateUser = async (req, res) => {
   }
 
   try {
-    await User.findByIdAndUpdate({ _id: req.params.id }, { $set: { email: email, name: name, password: password, mobile: mobile, profile: url } })
+    if(req.file){
+      await User.findByIdAndUpdate({ _id: req.params.id }, { $set: { email: email, name: name, password: password, mobile: mobile, profile: url } })
       .then((value) => {
         if (value) {
           res.send({ success: true, message: "User Updated" })
@@ -186,6 +187,19 @@ exports.updateUser = async (req, res) => {
       .catch(e => {
         res.send({ success: false, err: "invalid id" })
       })
+    }else{
+      await User.findByIdAndUpdate({ _id: req.params.id }, { $set: { email: email, name: name, password: password, mobile: mobile } })
+      .then((value) => {
+        if (value) {
+          res.send({ success: true, message: "User Updated" })
+        } else {
+          res.send({ success: false, message: "invalid user" })
+        }
+      })
+      .catch(e => {
+        res.send({ success: false, err: "invalid id" })
+      })
+    }
   } catch (error) {
     res.status(400).send({ message: error.message });
   }
@@ -209,5 +223,17 @@ exports.deleteUser = async (req, res) => {
       })
   } catch (error) {
     res.status(400).send({ message: error.message });
+  }
+}
+
+exports.getUserData = async (req,res) =>{
+  const id = req.params.userId; 
+  try {
+    const user = await User.findOne({_id:id});
+    if(user){
+      res.status(200).send(user);
+    }
+  } catch (error) {
+    res.send({message: error.message})
   }
 }
