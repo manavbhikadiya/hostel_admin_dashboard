@@ -1,6 +1,7 @@
-
-const User = require('../models/userModel')
-const fs = require('fs')
+const User = require("../models/userModel");
+const fs = require("fs");
+const Hostel = require("../models/hostelModel");
+const { default: mongoose } = require("mongoose");
 const nodemailer = require("nodemailer");
 
 const sendMail = (email, password) => {
@@ -37,11 +38,10 @@ exports.createUser = async (req, res) => {
   }
 
   try {
-
     const userExist = await User.findOne({ email: email });
 
     if (userExist) {
-      res.status(400).send({message:"Email already exist"});
+      res.status(400).send({ message: "Email already exist" });
     }
 
     const createUser = new User({ name, email, password, mobile });
@@ -53,9 +53,9 @@ exports.createUser = async (req, res) => {
     console.log(req.body);
     res.status(400).send({ message: error });
   }
-}
+};
 
-exports.loginUser = async(req,res) =>{
+exports.loginUser = async (req, res) => {
   const email = req.params.email;
   const { password } = req.body;
   try {
@@ -69,9 +69,9 @@ exports.loginUser = async(req,res) =>{
   } catch (error) {
     res.status(404).send({ message: "User not found" });
   }
-}
+};
 
-exports.forgotPassword = async(req,res) =>{
+exports.forgotPassword = async (req, res) => {
   const email = req.params.email;
   if (!email) {
     res.status(404).send({ message: "Email field is mandatory" });
@@ -87,80 +87,93 @@ exports.forgotPassword = async(req,res) =>{
   } catch (error) {
     res.status(400).send({ message: error });
   }
-}
+};
 
-exports.addFavouriteHostel = async(req,res) =>{
+exports.addFavouriteHostel = async (req, res) => {
   const user_id = req.params.user_id;
-    const hostel_id = req.params.hostel_id;
-    const college_id = req.params.college_id;
+  const hostel_id = req.params.hostel_id;
 
-    const userFind = await User.findOne({ _id: user_id });
+  const hostel = await Hostel.findOne(
+    { "hostels._id": mongoose.Types.ObjectId(hostel_id) },
+    { "hostels.$": 1 }
+  );
 
-    try {
-      const favHostel = await userFind.addFavouriteHostel(
-        hostel_id,
-        college_id
-      );
-      await favHostel.save();
+  const favHostels = ({
+    boys,
+    girls,
+    hostel_name,
+    manager_name,
+    helpline_no,
+    latitude,
+    longitude,
+    latitudeDelta,
+    longitudeDelta,
+    kms,
+    rooms_available,
+    room_price,
+    location,
+    description,
+  } = hostel.hostels[0]);
 
-      if (favHostel) {
-        res.status(201).send({ message: "Added to favourite" });
-      }
-    } catch (error) {
-      res.status(400).send({ message: error });
+  const userFind = await User.findOne({ _id: user_id });
+
+  try {
+    const favHostel = await userFind.addFavouriteHostel(favHostels);
+    await favHostel.save();
+
+    if (favHostel) {
+      res.status(201).send({ message: "Added to favourite" });
     }
-}
+  } catch (error) {
+    res.status(400).send({ message: error });
+  }
+};
 
 // image uploding
 exports.uploadProfileController = async (req, res) => {
-  
   const id = req.params.id;
 
   // file uploding
   if (req.file) {
-    var fs = require('fs');
+    var fs = require("fs");
 
     // function to encode file data to base64 encoded string
     function base64_encode(file) {
       // read binary data
       var bitmap = fs.readFileSync(file);
       // convert binary data to base64 encoded string
-      return new Buffer(bitmap).toString('base64');
+      return new Buffer(bitmap).toString("base64");
     }
     // base64 string
-    var base64Str = base64_encode(req.file.path)
+    var base64Str = base64_encode(req.file.path);
 
     // image url
-    var url = `data:${req.file.mimetype};base64,${base64Str}`
-  }
-  else {
+    var url = `data:${req.file.mimetype};base64,${base64Str}`;
+  } else {
     var err = {
       success: false,
-      message: "File not upoload"
-    }
-    res.send(err)
+      message: "File not upoload",
+    };
+    res.send(err);
   }
 
   const userFind = await User.findOne({ _id: id });
   try {
     if (userFind.id) {
       let newData = {
-        profile: url
-      }
-      const user = await User.findByIdAndUpdate({ _id: id }, newData)
-      await user.save()
-      res.send({ success: true, message: "file url saved ...." })
-
+        profile: url,
+      };
+      const user = await User.findByIdAndUpdate({ _id: id }, newData);
+      await user.save();
+      res.send({ success: true, message: "file url saved ...." });
     } else {
-      res.send({ message: "id is wrong" })
+      res.send({ message: "id is wrong" });
     }
-  }
-  catch (error) {
+  } catch (error) {
     console.log(error);
-    res.send({ error: error.message })
+    res.send({ error: error.message });
   }
-
-}
+};
 
 // update user
 exports.updateUser = async (req, res) => {
@@ -168,42 +181,48 @@ exports.updateUser = async (req, res) => {
   if (req.file) {
     function base64_encode(file) {
       var bitmap = fs.readFileSync(file);
-      return new Buffer(bitmap).toString('base64');
+      return new Buffer(bitmap).toString("base64");
     }
-    var base64Str = base64_encode(req.file.path)
-    var url = `data:${req.file.mimetype};base64,${base64Str}`
+    var base64Str = base64_encode(req.file.path);
+    var url = `data:${req.file.mimetype};base64,${base64Str}`;
   }
 
   try {
-    if(req.file){
-      await User.findByIdAndUpdate({ _id: req.params.id }, { $set: { email: email, name: name, mobile: mobile, profile: url } })
-      .then((value) => {
-        if (value) {
-          res.send({ success: true, message: "User Updated" })
-        } else {
-          res.send({ success: false, message: "invalid user" })
-        }
-      })
-      .catch(e => {
-        res.send({ success: false, err: "invalid id" })
-      })
-    }else{
-      await User.findByIdAndUpdate({ _id: req.params.id }, { $set: { email: email, name: name, mobile: mobile } })
-      .then((value) => {
-        if (value) {
-          res.send({ success: true, message: "User Updated" })
-        } else {
-          res.send({ success: false, message: "invalid user" })
-        }
-      })
-      .catch(e => {
-        res.send({ success: false, err: "invalid id" })
-      })
+    if (req.file) {
+      await User.findByIdAndUpdate(
+        { _id: req.params.id },
+        { $set: { email: email, name: name, mobile: mobile, profile: url } }
+      )
+        .then((value) => {
+          if (value) {
+            res.send({ success: true, message: "User Updated" });
+          } else {
+            res.send({ success: false, message: "invalid user" });
+          }
+        })
+        .catch((e) => {
+          res.send({ success: false, err: "invalid id" });
+        });
+    } else {
+      await User.findByIdAndUpdate(
+        { _id: req.params.id },
+        { $set: { email: email, name: name, mobile: mobile } }
+      )
+        .then((value) => {
+          if (value) {
+            res.send({ success: true, message: "User Updated" });
+          } else {
+            res.send({ success: false, message: "invalid user" });
+          }
+        })
+        .catch((e) => {
+          res.send({ success: false, err: "invalid id" });
+        });
     }
   } catch (error) {
     res.status(400).send({ message: error.message });
   }
-}
+};
 
 // delete user
 exports.deleteUser = async (req, res) => {
@@ -212,28 +231,27 @@ exports.deleteUser = async (req, res) => {
       .then((value) => {
         console.log(value);
         if (value) {
-
-          res.send({ success: true, message: "User Updated" })
+          res.send({ success: true, message: "User Updated" });
         } else {
-          res.send({ success: false, message: "invalid user" })
+          res.send({ success: false, message: "invalid user" });
         }
       })
-      .catch(e => {
-        res.send({ success: false, err: "invalid id" })
-      })
+      .catch((e) => {
+        res.send({ success: false, err: "invalid id" });
+      });
   } catch (error) {
     res.status(400).send({ message: error.message });
   }
-}
+};
 
-exports.getUserData = async (req,res) =>{
-  const id = req.params.userId; 
+exports.getUserData = async (req, res) => {
+  const id = req.params.userId;
   try {
-    const user = await User.findOne({_id:id});
-    if(user){
+    const user = await User.findOne({ _id: id });
+    if (user) {
       res.status(200).send(user);
     }
   } catch (error) {
-    res.send({message: error.message})
+    res.send({ message: error.message });
   }
-}
+};

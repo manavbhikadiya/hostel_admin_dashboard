@@ -42,22 +42,12 @@ exports.getHostelDetails = async (req, res) => {
 
 exports.getFavouriteHostels = async (req, res) => {
   const user_id = req.params.user_id;
-  User.find({ _id: user_id })
-    .then((user) => {
-      const hostels = user[0].favHostels;
-      hostels.map((val) => {
-        Hostel.find({ _id: val.college_id })
-          .then((favHostel) => {
-            res.send(favHostel);
-          })
-          .catch(() => {
-            res.status(404).send({ message: "Favourite Hostel Not found" });
-          });
-      });
-    })
-    .catch(() => {
-      res.status(404).send({ message: "Favourite Hostel not found" });
-    });
+  try {
+    const user = await User.findById(user_id);
+    res.send(user.favHostels);
+  } catch (error) {
+    res.send({ message: error });
+  }
 };
 
 exports.addHostel = async (req, res) => {
@@ -132,7 +122,7 @@ exports.updateHostel = async (req, res) => {
     rooms_available,
     room_price,
     location,
-    description
+    description,
   } = req.body;
 
   if (req.file) {
@@ -163,7 +153,7 @@ exports.updateHostel = async (req, res) => {
     hostel_image: url,
   };
 
-  if(!req.file){
+  if (!req.file) {
     Hostel.updateOne(
       { "hostels._id": id },
       {
@@ -179,14 +169,18 @@ exports.updateHostel = async (req, res) => {
           "hostels.$.rooms_available": newData.rooms_available,
           "hostels.$.room_price": newData.room_price,
           "hostels.$.location": newData.location,
-          "hostels.$._id":id,
-          "hostels.$.description":newData.description
+          "hostels.$._id": id,
+          "hostels.$.description": newData.description,
         },
       }
     )
       .then((college) => {
         if (college) {
-          res.send({ success: true, message: "College updated", data: college });
+          res.send({
+            success: true,
+            message: "College updated",
+            data: college,
+          });
         } else {
           res.send({ success: false, message: "Invalid data" });
         }
@@ -195,7 +189,7 @@ exports.updateHostel = async (req, res) => {
         console.log(e);
         res.send({ success: false, err: e.message });
       });
-  }else{
+  } else {
     Hostel.update(
       { "hostels._id": id },
       {
@@ -211,15 +205,19 @@ exports.updateHostel = async (req, res) => {
           "hostels.$.rooms_available": newData.rooms_available,
           "hostels.$.room_price": newData.room_price,
           "hostels.$.location": newData.location,
-          "hostels.$.hostel_image":newData.hostel_image,
-          "hostels.$._id":id,
-          "hostels.$.description":newData.description
+          "hostels.$.hostel_image": newData.hostel_image,
+          "hostels.$._id": id,
+          "hostels.$.description": newData.description,
         },
       }
     )
       .then((college) => {
         if (college) {
-          res.send({ success: true, message: "College updated", data: college });
+          res.send({
+            success: true,
+            message: "College updated",
+            data: college,
+          });
         } else {
           res.send({ success: false, message: "Invalid data" });
         }
