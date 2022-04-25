@@ -10,7 +10,7 @@ route.post('/loginUser/:email',loginUser)
 
 route.post('/forgotpassword/:email', forgotPassword)
 
-route.post('/addFavourite/:user_id/:hostel_id/:college_id', addFavouriteHostel)
+route.post('/addFavourite/:user_id/:hostel_id', addFavouriteHostel)
 
 route.post('/upload/:id',uploadProfile.single("profile"), uploadProfileController)
 
