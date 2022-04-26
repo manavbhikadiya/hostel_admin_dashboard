@@ -24,7 +24,7 @@ const Navbar = () => {
     if (res) {
       localStorage.removeItem("college_id");
       localStorage.removeItem("loginToken");
-      history.push("/login");
+      history.push("/");
     } else {
       history.push("/");
     }

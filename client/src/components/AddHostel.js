@@ -203,19 +203,6 @@ const AddHostel = () => {
               </div>
               <div class="col-md-2">
                 <label for="inputZip" class="form-label">
-                  Longitude
-                </label>
-                <input
-                  type="number"
-                  class="form-control"
-                  value={data.longitude}
-                  name="longitude"
-                  onChange={handleData}
-                  id="inputZip"
-                />
-              </div>
-              <div class="col-md-2">
-                <label for="inputZip" class="form-label">
                   Latitude
                 </label>
                 <input
@@ -223,6 +210,19 @@ const AddHostel = () => {
                   class="form-control"
                   value={data.latitude}
                   name="latitude"
+                  onChange={handleData}
+                  id="inputZip"
+                />
+              </div>
+               <div class="col-md-2">
+                <label for="inputZip" class="form-label">
+                  Longitude
+                </label>
+                <input
+                  type="number"
+                  class="form-control"
+                  value={data.longitude}
+                  name="longitude"
                   onChange={handleData}
                   id="inputZip"
                 />

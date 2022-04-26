@@ -214,19 +214,6 @@ const UpdateHostel = () => {
               </div>
               <div class="col-md-2">
                 <label for="inputZip" class="form-label">
-                  Longitude
-                </label>
-                <input
-                  type="number"
-                  class="form-control"
-                  defaultValue={initialData.longitude}
-                  name="longitude"
-                  onChange={handleData}
-                  id="inputZip"
-                />
-              </div>
-              <div class="col-md-2">
-                <label for="inputZip" class="form-label">
                   Latitude
                 </label>
                 <input
@@ -234,6 +221,19 @@ const UpdateHostel = () => {
                   class="form-control"
                   defaultValue={initialData.latitude}
                   name="latitude"
+                  onChange={handleData}
+                  id="inputZip"
+                />
+              </div>
+              <div class="col-md-2">
+                <label for="inputZip" class="form-label">
+                  Longitude
+                </label>
+                <input
+                  type="number"
+                  class="form-control"
+                  defaultValue={initialData.longitude}
+                  name="longitude"
                   onChange={handleData}
                   id="inputZip"
                 />
