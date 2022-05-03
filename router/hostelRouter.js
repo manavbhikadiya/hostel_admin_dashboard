@@ -1,6 +1,6 @@
 const express = require("express");
 const route = express.Router();
-const { getAllHostels,addHostel, updateHostel, removeHostel, getAllHostelsOfCollege, getHostelDetails, getFavouriteHostels, addComment } = require('../controllers/hostelController');
+const { getAllHostels,addHostel, updateHostel, removeHostel, getAllHostelsOfCollege, getHostelDetails, getFavouriteHostels, addComment, getComments } = require('../controllers/hostelController');
 const authenticate = require("../middleware/authenticate");
 const { uploadProfile } = require('../middleware/file');
 
@@ -27,5 +27,6 @@ route.get('/initalData',authenticate,(req,res)=>{
 })
 
 route.post('/addComment',addComment)
+route.get('/getComments/:college_id/:hostel_id',getComments)
 
 module.exports = route;

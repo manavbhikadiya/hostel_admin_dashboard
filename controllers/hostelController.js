@@ -260,3 +260,18 @@ exports.addComment = async (req, res) => {
     res.send(error);
   }
 };
+
+exports.getComments = async (req, res) => {
+  const { college_id, hostel_id } = req.params;
+  try {
+    const getAllComments = await Hostel.findOne({ _id: college_id })
+    getAllComments.hostels.map((hostels) => {
+      if (hostels._id == hostel_id) {
+        res.send(hostels.comments);
+      }
+    })
+    
+  } catch (error) {
+    res.send(error);
+  }
+}
