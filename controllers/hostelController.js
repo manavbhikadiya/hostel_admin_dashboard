@@ -240,3 +240,23 @@ exports.removeHostel = async (req, res) => {
       res.send({ success: false, error: "error" });
     });
 };
+
+exports.addComment = async (req, res) => {
+  const { commenter_name, comment, hostel_id } = req.body;
+  try {
+    const updateHostel = await Hostel.updateOne(
+      { hostels: { $elemMatch: { _id: hostel_id } } },
+      {
+        $push: {
+          "hostels.$.comments": {
+            commenter_name: commenter_name,
+            comment: comment,
+          },
+        },
+      }
+    );
+    res.send("comment Sent");
+  } catch (error) {
+    res.send(error);
+  }
+};
